@@ -1,6 +1,6 @@
 [package]
 name = "fizzy-rs"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 description = "a directory fuzzy finder"
 readme = "README.md"
@@ -21,3 +21,4 @@ path = "src/main.rs"
 copypasta-ext = "0.4.4"
 crossterm = "0.26.1"
 defer-lite = "1.0.0"
+xdg-home = "1.0.0"

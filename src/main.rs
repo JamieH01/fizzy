@@ -9,7 +9,7 @@ use std::{
     cmp::Ordering,
     fs::{self},
     io::{stdout, Result, Write},
-    rc::Rc,
+    rc::Rc, path::PathBuf,
 };
 
 use crossterm::{
@@ -75,14 +75,14 @@ fn main() -> Result<()> {
 }
 
 fn collect_paths() -> Result<Rc<[Box<str>]>> {
-    fn collect(path: &str, table: &mut Vec<String>) -> Result<()> {
+    fn collect(path: PathBuf, table: &mut Vec<String>) -> Result<()> {
         for entry in fs::read_dir(path)? {
             let entry = entry?;
             let new_path = entry.path().to_string_lossy().into_owned();
 
             if entry.file_type()?.is_dir() && !new_path.contains("/.") {
                 table.push(new_path.clone());
-                collect(&new_path, table)?;
+                collect(PathBuf::from(&new_path), table)?;
             }
         }
 
@@ -90,7 +90,7 @@ fn collect_paths() -> Result<Rc<[Box<str>]>> {
     }
 
     let mut table = vec![];
-    collect("/home/jamie", &mut table)?;
+    collect(xdg_home::home_dir().unwrap(), &mut table)?;
 
     //dear god
     let ptr = table
